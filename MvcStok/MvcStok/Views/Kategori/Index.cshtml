@@ -1,0 +1,47 @@
+﻿@using MvcStok.Models.Entity
+@model List<TblKategoriler>
+@*@model PagedList.IPagedList<TblKategoriler>
+    @using PagedList
+    @using PagedList.Mvc*@
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+<h2 class="text text-center">Kategoriler Tablosu</h2>
+<br />
+<table id="tbl1" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Kategori Id</th>
+            <th>Kategori Adı</th>
+            <th>Sil</th>
+            <th>Güncelle</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ktgr in Model)
+        {
+            <tr>
+                <td>@ktgr.KategoriId</td>
+                <td>@ktgr.KategoriAd</td>
+                @*<td><a href="/Kategori/Sil/@ktgr.KategoriId" class="btn btn-danger">Sil</a></td>*@
+                <td>
+                    @Html.ActionLink("Sil", "Sil", new { id = ktgr.KategoriId },
+                    new { @class = "btn btn-warning", onclick = "return confirm('Silmek istiyor musunuz ?')" })
+                </td>
+                <td><a href="/Kategori/KategoriGetir/@ktgr.KategoriId" class="btn btn-success">Güncelle</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@*@Html.PagedListPager((IPagedList)Model, sayfa => Url.Action("Index", new { sayfa }))*@
+<a href="/Kategori/YeniKategori/" class="btn btn-primary">Yeni Kategori Ekle</a>
+<script>
+    $(document).ready(function () {
+        $('#tbl1').DataTable({
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+            }
+        });
+    });
+</script>

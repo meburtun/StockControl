@@ -1,0 +1,75 @@
+﻿@model MvcStok.Models.Entity.TblSatislar
+@using MvcStok.Models.Entity
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+
+}
+<h2 class="text text-center">Satışlar Tablosu</h2>
+<br />
+<table id="tbl1" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Satış Id</th>
+            <th>Ürün</th>
+            <th>Müşteri</th>
+            <th>Adet</th>
+            <th>Fiyat</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.data)
+        {
+            <tr>
+                <td>@item.SatısId</td>
+                <td>@item.TblUrunler.UrunAd</td>
+                <td>@item.TblMusteri.MusterıAd @item.TblMusteri.MusterıSoyad</td>
+                <td>@item.Adet</td>
+                <td>@item.Fiyat</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal1">
+    Satış Yap
+</button>
+@Html.Raw(TempData["msg"])
+<div class="modal" id="Modal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Satış Yapma Ekranı</h2>
+            </div>
+            <form method="post" action="/Satis/YeniSatis">
+                <div class="modal-body">
+                    <label>Ürün adı :</label>
+                    @*@Html.TextBoxFor(m => m.Urun, new { @class = "form-control" })*@
+                    @Html.DropDownListFor(m => m.TblUrunler.UrunId, (List<SelectListItem>)ViewBag.dgr1, new { @class = "form-control" })
+                    <br />
+                    <label>Müsteri Adı Soyadı</label>
+                    @*@Html.TextBoxFor(m => m.Musteri, new { @class = "form-control" })*@
+                    @Html.DropDownListFor(m => m.TblMusteri.MusterıId, (List<SelectListItem>)ViewBag.dgr2, new { @class = "form-control" })
+                    <br />
+                    <label>Ürün Adeti</label>
+                    @Html.TextBoxFor(m => m.Adet, new { @class = "form-control" })
+                    <br />
+                    <label>Ürün Fiyatı</label>
+                    @Html.TextBoxFor(m => m.Fiyat, new { @class = "form-control" })
+                    <br />
+                    <button type="submit" class="btn btn-info">Satışı Kaydet</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Vazgeç</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#tbl1').DataTable({
+            language: {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+            }
+        });
+    });
+</script>
